@@ -90,8 +90,8 @@ const Login = ({ onLoginSuccess }) => {
           </Form.Item>
           
           <div style={{ textAlign: 'center' }}>
-            <p>Usuario de demo: admin</p>
-            <p>Contraseña: 123456</p>
+            <p>Usuario de demo: agreda</p>
+            <p>Contraseña: 123123</p>
           </div>
         </Form>
       </Card>

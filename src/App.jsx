@@ -154,19 +154,20 @@ const App = () => {
     setIsLoading(true);
 
     // Mock API call with timeout
-    setTimeout(() => {
-      // Generate mock risks and impacts (but only use the first one)
-      const mockRiesgo = `Pérdida de ${newData.activo}`;
-      const mockImpacto = `Pérdida de información valiosa relacionada con ${newData.activo}`;
-
-      // Add a single row for this asset
-      addNewRow(newData.activo, mockRiesgo, mockImpacto);
-      
-      setIsModalVisible(false);
-      setIsLoading(false);
-      setSuggestEnabled(true);
-      message.success(`Activo "${newData.activo}" agregado con éxito`);
-    }, 1000);
+    axios.post("http://localhost:5500/analizar-riesgos", { activo: newData.activo })
+      .then(response => {
+        const { riesgos, impactos } = response.data;
+        // Solo uso el primero como hacías en tu mock
+        addNewRow(newData.activo, riesgos[0], impactos[0]);
+        setIsModalVisible(false);
+        setSuggestEnabled(true);
+        message.success(`Activo "${newData.activo}" agregado con éxito`);
+      })
+      .catch(err => {
+        console.error(err);
+        message.error("Error al analizar riesgos");
+      })
+      .finally(() => setIsLoading(false));
   };
 
   // Add a single new row to the table
@@ -203,28 +204,25 @@ const App = () => {
     }
 
     setIsRecommending(true);
-    
-    // Mock API call with timeout
-    setTimeout(() => {
-      const treatments = [
-        'Implementación de controles de acceso físico',
-        'Copias de seguridad periódicas',
-        'Cifrado de datos sensibles',
-        'Capacitación de personal sobre seguridad',
-        'Implementación de firewall de nueva generación',
-        'Monitoreo continuo de accesos',
-        'Desarrollo de políticas de seguridad'
-      ];
-      
-      const newDataSource = dataSource.map(item => ({
-        ...item,
-        tratamiento: treatments[Math.floor(Math.random() * treatments.length)]
-      }));
-      
+
+    Promise.all(
+      dataSource.map(item =>
+        axios.post("http://localhost:5500/sugerir-tratamiento", {
+          activo: item.activo,
+          riesgo: item.riesgo,
+          impacto: item.impacto
+        }).then(res => ({
+          ...item,
+          tratamiento: res.data.tratamiento
+        }))
+      )
+    ).then(newDataSource => {
       setDataSource(newDataSource);
-      setIsRecommending(false);
-      message.success('Tratamientos recomendados con éxito');
-    }, 1500);
+      message.success("Tratamientos recomendados con éxito");
+    }).catch(err => {
+      console.error(err);
+      message.error("Error al obtener tratamientos");
+    }).finally(() => setIsRecommending(false));
   };
 
   // Handle save after cell edit

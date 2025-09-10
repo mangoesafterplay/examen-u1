@@ -1,7 +1,7 @@
 // Simple authentication service with hardcoded credentials
 const credentials = {
-  username: "admin",
-  password: "123456"
+  username: "agreda",
+  password: "123123"
 };
 
 // Login function that returns a promise
