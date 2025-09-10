@@ -1,7 +1,7 @@
 # Informe de Auditoría de Sistemas - Examen de la Unidad I
 
 **Nombres y apellidos:**  
-Jesús Eduardo Ágreda Ramírez  
+Jesús Eduardo Agreda Ramirez  
 
 **Fecha:**  
 10/09/2025  
