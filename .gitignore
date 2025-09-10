@@ -1,0 +1,43 @@
+# Archivos específicos a ignorar
+Resumen.pdf
+Caso.md
+Caso.pdf
+
+# Node
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.venv/
+env/
+venv/
+
+# Flask instance
+instance/
+
+# Build
+build/
+coverage/
+
+# OS
+Thumbs.db
